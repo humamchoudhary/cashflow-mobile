@@ -38,16 +38,18 @@ const Login = () => {
           <Text >Login</Text>
         </TouchableOpacity>
         
-        <TouchableOpacity style={{   backgroundColor: colors.cta,
+        {/* <TouchableOpacity style={{   backgroundColor: colors.cta,
             marginTop:10,
             borderRadius: 40,
             width: 80,
             height: 30,
             justifyContent:'center',
             paddingLeft:20
-            } } onPress={handleSignUp}>
+            } } onPress={()=>{
+              navigation.navigate('Signup');
+            }}>
           <Text >SignUp</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
 
     </View>

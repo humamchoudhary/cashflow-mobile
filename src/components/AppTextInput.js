@@ -6,49 +6,42 @@ import { colors } from '../../utils';
 const AppTextInput = ({ inputMode, ...otherProps }) => {
   const [focused, setFocused] = useState(false);
 
-
   return (
-    // <View style={styles.container}>
-    <TextInput
-      onFocus={() => setFocused(true)}
-      onBlur={() => setFocused(false)}
-      placeholderTextColor={colors.unfocus}
-      style={[
-        styles.input,
-        focused && styles.inputFocused,
-      ]}
-      {...otherProps}
-    />
-
+    <View style={[styles.container,
+      focused && styles.inputFocused
+    ]}>
+      <TextInput
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
+        placeholderTextColor={colors.unfocus}
+        style={[
+          styles.input,
+        ]}
+        {...otherProps}
+      />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  // container: {
-  //   position: 'relative',
-  // },
-
-  input: {
+  container: {
     height: 30,
-    width: "75%",
-    borderWidth: 1,
+    width: '75%',
     marginBottom: 15,
     borderColor: colors.unfocus,
+    borderWidth: 1,
     borderRadius: 4,
-    color: colors.unfocus,
-    paddingVertical: 20,
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
   },
-
+  input: {
+    flex: 1,
+    color: colors.light,
+  },
   inputFocused: {
     borderWidth: 3,
     borderColor: colors.cta,
-    color: colors.red
-    // shadowOffset: { width: 4, height: Spacing },
-    // shadowColor: Colors.primary,
-    // shadowOpacity: 0.2,
-    // shadowRadius: Spacing,
   },
 });
+
 
 export default AppTextInput; 
