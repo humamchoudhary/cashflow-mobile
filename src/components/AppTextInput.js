@@ -3,7 +3,7 @@ import { StyleSheet, TextInput, TextInputProps, View } from 'react-native';
 import fonts from '../fonts/fonts';
 import { colors } from '../../utils';
 
-const AppTextInput = ({ inputMode, ...otherProps }) => {
+const AppTextInput = ({ placeholder,value,setValue}) => {
   const [focused, setFocused] = useState(false);
 
   return (
@@ -17,7 +17,9 @@ const AppTextInput = ({ inputMode, ...otherProps }) => {
         style={[
           styles.input,
         ]}
-        {...otherProps}
+        placeholder={placeholder}
+        value={value}
+        onChangeText={(text)=>{setValue(text)}}
       />
     </View>
   );

@@ -1,18 +1,18 @@
 import { View, Text, StyleSheet, ScrollView } from "react-native";
-import { colors, sample_data } from "../../utils";
+import { colors} from "../../utils";
 import { useFonts } from "expo-font";
 import { Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useState } from "react";
-const Home = () => {
+const Home = ({user}) => {
 
   const [data,setData]=useState({});
   
   useEffect(() => {
-    setData(sample_data[0]);
+    setData(user);
+    console.log(data)
   }, []);
   
-  console.log(data)
   const [fontsLoaded] = useFonts({
     Regular: require("../fonts/Inter-Regular.ttf"),
     Medium: require("../fonts/Inter-Medium.ttf"),
@@ -41,7 +41,7 @@ const Home = () => {
             marginBottom: 10,
           }}
         >
-          {data.name}
+          {data.full_name}
         </Text>
         <LinearGradient
           colors={[colors.cta, colors.purple]}
@@ -61,7 +61,7 @@ const Home = () => {
               fontFamily: "Bold",
             }}
           >
-            $ 400000
+            {data.currency} {data.balance}
           </Text>
           <Text
             style={{
@@ -81,7 +81,7 @@ const Home = () => {
               fontFamily: "Bold",
             }}
           >
-            $ 4000
+            {data.currency} {data.balance}
           </Text>
         </LinearGradient>
         <View
@@ -200,15 +200,7 @@ const Home = () => {
 };
 
 export default Home;
-<Text
-  style={{
-    color: colors.light,
-    fontSize: 14,
-    fontFamily: "Regular",
-  }}
->
-  Misc
-</Text>;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

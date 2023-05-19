@@ -1,17 +1,43 @@
 import { View, Text, StyleSheet,TouchableOpacity,TextInput } from 'react-native'
 import { Button } from 'react-native';
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import AppTextInput from '../components/AppTextInput';
 import { useNavigation } from '@react-navigation/native';
-import { colors } from '../../utils';
-
+import { colors, URL} from '../../utils';
+import { useDispatch } from 'react-redux';
 const Login = () => {
     const navigation = useNavigation();
-    
+    const dispatch = useDispatch()    
+    const [user, setUser] = useState();
+    const [username,setUsername] = useState('');
+    const [password,setPassword] = useState('');
+    const [error,setError] = useState(false);
 
-    const handleLogin = () => {
-      // Perform login logic here
-      navigation.navigate('Index');
+  
+    useEffect(() => {
+      async function fetchData() {
+        if (user) {
+          dispatch({ type: "SET_USER", payload: user });
+
+          navigation.navigate('Index')
+        }
+      }
+  
+      fetchData();
+        }, [user]);
+    const handleLogin = async () => {
+        
+        const response = await fetch(`${URL}/login`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ username: username, password: password }),
+        });
+        if (response.ok) {
+          const userData = await response.json();
+          setUser(userData);
+    }
     }
   
     return (
@@ -21,9 +47,9 @@ const Login = () => {
           alignItems:"center" 
         }}>
 
-        <AppTextInput placeholder="Username"/>
+        <AppTextInput value={username} setValue={setUsername} placeholder="Username"/>
 
-        <AppTextInput placeholder="Password"/>
+        <AppTextInput value={password} setValue={setPassword} placeholder="Password"/>
 
 
         

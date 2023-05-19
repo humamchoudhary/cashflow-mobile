@@ -12,10 +12,15 @@ import Stats from "./Stats";
 import WalletScreen from "./WalletScreen";
 import Profile from "./Profile";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 const Tab = createBottomTabNavigator();
 
 const Index = ()=>{
+    const dispatch = useDispatch();
+    const [user,setUser] = useState(useSelector((state)=>state.user));
+
     return (<View style={{ flex: 1, backgroundColor: colors.bg }}>
         <StatusBar animated={true} backgroundColor={colors.bg} />
         <Tab.Navigator
@@ -57,7 +62,7 @@ const Index = ()=>{
         >
             <Tab.Screen
                 name="Home"
-                component={Home}
+                
                 options={{
                     tabBarLabel: "",
 
@@ -69,7 +74,7 @@ const Index = ()=>{
                         />
                     ),
                 }}
-            />
+            >{() => <Home user={user} />}</Tab.Screen>
 
             <Tab.Screen
                 name="Budget2"
