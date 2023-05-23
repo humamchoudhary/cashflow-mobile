@@ -79,7 +79,7 @@ const Stats = () => {
         >
           Balance Overview
         </Text>
-        <LinearGradient
+        {/* <LinearGradient
           colors={[colors.cta, colors.purple]}
           start={{ x: 0, y: 0.09 }}
           end={{ x: 1.5, y: 1.5 }}
@@ -105,7 +105,7 @@ const Stats = () => {
               textAlign: "center",
             }}
           >
-            $400000
+            {data.currency} {data.balance}
           </Text>
           <Text
             style={{
@@ -127,7 +127,7 @@ const Stats = () => {
               textAlign: "center",
             }}
           >
-            $4000
+            {data.currency} {data.months_income}
           </Text>
           <Text
             style={{
@@ -149,9 +149,9 @@ const Stats = () => {
               textAlign: "center",
             }}
           >
-            $5000
+            {data.currency} {data.savings}
           </Text>
-        </LinearGradient>
+        </LinearGradient> */}
         <ScrollView>
           <View
             style={{

@@ -3,7 +3,7 @@ import { StyleSheet, TextInput, TextInputProps, View } from 'react-native';
 import fonts from '../fonts/fonts';
 import { colors } from '../../utils';
 
-const AppTextInput = ({ placeholder,value,setValue}) => {
+const AppTextInput = ({ placeholder,value,setValue,password}) => {
   const [focused, setFocused] = useState(false);
 
   return (
@@ -11,6 +11,7 @@ const AppTextInput = ({ placeholder,value,setValue}) => {
       focused && styles.inputFocused
     ]}>
       <TextInput
+      secureTextEntry={password}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
         placeholderTextColor={colors.unfocus}

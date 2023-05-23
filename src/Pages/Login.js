@@ -49,7 +49,7 @@ const Login = () => {
 
         <AppTextInput value={username} setValue={setUsername} placeholder="Username"/>
 
-        <AppTextInput value={password} setValue={setPassword} placeholder="Password"/>
+        <AppTextInput value={password} setValue={setPassword} placeholder="Password" password={true}/>
 
 
         

@@ -1,18 +1,19 @@
 import { View, Text, StyleSheet, ScrollView } from "react-native";
-import { colors} from "../../utils";
+import { colors } from "../../utils";
 import { useFonts } from "expo-font";
 import { Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useState } from "react";
-const Home = ({user}) => {
+import TransactionHistroy from "../components/TransactionHistroy";
+const Home = ({ user }) => {
 
-  const [data,setData]=useState({});
-  
+  const [data, setData] = useState({});
+
   useEffect(() => {
     setData(user);
     console.log(data)
   }, []);
-  
+
   const [fontsLoaded] = useFonts({
     Regular: require("../fonts/Inter-Regular.ttf"),
     Medium: require("../fonts/Inter-Medium.ttf"),
@@ -20,9 +21,9 @@ const Home = ({user}) => {
     Bold: require("../fonts/Inter-Bold.ttf"),
     Italic: require("../fonts/Lato-BoldItalic.ttf"),
   });
+  if (fontsLoaded && data != {}) {
 
-  if (fontsLoaded && data !={} ) {
-    return (
+  return (
       <View style={styles.container}>
         <Text
           style={{
@@ -50,14 +51,14 @@ const Home = ({user}) => {
           angle={102}
           style={styles.inner}
         >
-          <Text style={{ color: "white", fontSize: 20, fontFamily: "Medium" }}>
+          <Text style={{ color: "white", fontSize: 15, fontFamily: "Medium", marginTop:10 }}>
             Current Balance
           </Text>
           <Text
             style={{
               marginTop: -3,
               color: "white",
-              fontSize: 35,
+              fontSize: 25,
               fontFamily: "Bold",
             }}
           >
@@ -65,7 +66,7 @@ const Home = ({user}) => {
           </Text>
           <Text
             style={{
-              marginTop: 5,
+              marginTop: 15,
               color: "white",
               fontSize: 15,
               fontFamily: "Medium",
@@ -77,7 +78,7 @@ const Home = ({user}) => {
             style={{
               marginTop: -2,
               color: "white",
-              fontSize: 30,
+              fontSize: 25,
               fontFamily: "Bold",
             }}
           >
@@ -100,100 +101,9 @@ const Home = ({user}) => {
           </View>
         </View>
 
-        <ScrollView styles={{ paddingTop: "20px" }}>
-          <View style={styles.transection}>
-            <View
-              style={{
-                backgroundColor: colors.green,
-                borderRadius: 10000,
-                padding: 10,
-              }}
-            >
-              <Feather name="arrow-up-right" size={24} color={colors.light} />
-            </View>
-            <View
-              style={{
-                flexDirection: "column",
-                justifyContent: "center",
-                flex: 2,
-              }}
-            >
-              <Text
-                style={{
-                  color: colors.light,
-                  fontSize: 20,
-                  fontFamily: "SemiBold",
-                }}
-              >
-                Pizza Hut
-              </Text>
-              <Text
-                style={{
-                  color: colors.light,
-                  fontSize: 14,
-                  fontFamily: "Regular",
-                }}
-              >
-                Food
-              </Text>
-            </View>
-            <Text
-              style={{
-                color: colors.light,
-                fontSize: 20,
-                fontFamily: "SemiBold",
-              }}
-            >
-              $40.99
-            </Text>
-          </View>
-          <View style={styles.transection}>
-            <View
-              style={{
-                backgroundColor: colors.red,
-                borderRadius: 10000,
-                padding: 10,
-              }}
-            >
-              <Feather name="arrow-down-left" size={24} color={colors.light} />
-            </View>
-            <View
-              style={{
-                flexDirection: "column",
-                justifyContent: "center",
-                flex: 2,
-              }}
-            >
-              <Text
-                style={{
-                  color: colors.light,
-                  fontSize: 20,
-                  fontFamily: "SemiBold",
-                }}
-              >
-                Rent
-              </Text>
-              <Text
-                style={{
-                  color: colors.light,
-                  fontSize: 14,
-                  fontFamily: "Regular",
-                }}
-              >
-                Misc
-              </Text>
-            </View>
-            <Text
-              style={{
-                color: colors.light,
-                fontSize: 20,
-                fontFamily: "SemiBold",
-              }}
-            >
-              $400
-            </Text>
-          </View>
-        </ScrollView>
+        {/* <TransactionHistory/> */}
+        <TransactionHistroy data={data}/>
+
       </View>
     );
   }

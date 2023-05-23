@@ -13,6 +13,7 @@ export const sample_data = [{
   name:"Rafay Qureshi",
   current_balance:2302,
   months_income:30,
+  savings:55,
   transections:[{
     name:'Pizza Hut',
     purpose:'Food',
@@ -31,4 +32,4 @@ export const sample_data = [{
 //   "poppins-bold": "poppins-bold",
 //   "poppins-semiBold": "poppins-semiBold",
 // };
-export const URL = 'http://10.4.72.102:5000';
+export const URL = 'http://10.4.73.93:5000';
