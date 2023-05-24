@@ -1,17 +1,14 @@
 import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { colors } from "../../utils";
 import { useFonts } from "expo-font";
-import { Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useState } from "react";
 import TransactionHistroy from "../components/TransactionHistroy";
 const Home = ({ user }) => {
-
   const [data, setData] = useState({});
 
   useEffect(() => {
     setData(user);
-    console.log(data)
   }, []);
 
   const [fontsLoaded] = useFonts({
@@ -22,8 +19,7 @@ const Home = ({ user }) => {
     Italic: require("../fonts/Lato-BoldItalic.ttf"),
   });
   if (fontsLoaded && data != {}) {
-
-  return (
+    return (
       <View style={styles.container}>
         <Text
           style={{
@@ -51,7 +47,14 @@ const Home = ({ user }) => {
           angle={102}
           style={styles.inner}
         >
-          <Text style={{ color: "white", fontSize: 15, fontFamily: "Medium", marginTop:10 }}>
+          <Text
+            style={{
+              color: "white",
+              fontSize: 15,
+              fontFamily: "Medium",
+              marginTop: 10,
+            }}
+          >
             Current Balance
           </Text>
           <Text
@@ -91,6 +94,7 @@ const Home = ({ user }) => {
             flexDirection: "row",
             gap: 20,
             marginTop: 20,
+            marginBottom: 20,
           }}
         >
           <View style={{ ...styles.button, ...styles.btnRed }}>
@@ -102,8 +106,7 @@ const Home = ({ user }) => {
         </View>
 
         {/* <TransactionHistory/> */}
-        <TransactionHistroy data={data}/>
-
+        <TransactionHistroy data={data} />
       </View>
     );
   }

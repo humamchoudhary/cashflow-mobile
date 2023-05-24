@@ -9,27 +9,32 @@ export const colors = {
   purple: "#C52BDE",
   green2: "#b0fc38",
 };
-export const sample_data = [{
-  name:"Rafay Qureshi",
-  current_balance:2302,
-  months_income:30,
-  savings:55,
-  transections:[{
-    name:'Pizza Hut',
-    purpose:'Food',
-    price:40.3,
-    type:"outgoing",
-  },{
-    name:'Muhammad Humam',
-    purpose:'Misc',
-    price:12,
-    type:"incoming",
-  }]
-}]
+export const sample_data = [
+  {
+    name: "Rafay Qureshi",
+    current_balance: 2302,
+    months_income: 30,
+    savings: 55,
+    transections: [
+      {
+        name: "Pizza Hut",
+        purpose: "Food",
+        price: 40.3,
+        type: "outgoing",
+      },
+      {
+        name: "Muhammad Humam",
+        purpose: "Misc",
+        price: 12,
+        type: "incoming",
+      },
+    ],
+  },
+];
 
 // export default {
 //   ": "poppins-regular",
 //   "poppins-bold": "poppins-bold",
 //   "poppins-semiBold": "poppins-semiBold",
 // };
-export const URL = 'http://10.4.72.140:5000';
+export const URL = "http://192.168.8.128:5000";

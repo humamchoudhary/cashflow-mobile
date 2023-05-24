@@ -1,26 +1,32 @@
-import React, { useState } from 'react';
-import { StyleSheet, TextInput, TextInputProps, View } from 'react-native';
-import fonts from '../fonts/fonts';
-import { colors } from '../../utils';
+import React, { useState } from "react";
+import { StyleSheet, TextInput, TextInputProps, View } from "react-native";
+import fonts from "../fonts/fonts";
+import { colors } from "../../utils";
 
-const AppTextInput = ({ placeholder,value,setValue,password}) => {
+const AppTextInput = ({
+  props,
+  placeholder,
+  value,
+  setValue,
+  password,
+  style,
+}) => {
   const [focused, setFocused] = useState(false);
 
   return (
-    <View style={[styles.container,
-      focused && styles.inputFocused
-    ]}>
+    <View style={[styles.container, focused && styles.inputFocused, style]}>
       <TextInput
-      secureTextEntry={password}
+        {...props}
+        secureTextEntry={password}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
         placeholderTextColor={colors.unfocus}
-        style={[
-          styles.input,
-        ]}
+        style={[styles.input]}
         placeholder={placeholder}
         value={value}
-        onChangeText={(text)=>{setValue(text)}}
+        onChangeText={(text) => {
+          setValue(text);
+        }}
       />
     </View>
   );
@@ -28,8 +34,8 @@ const AppTextInput = ({ placeholder,value,setValue,password}) => {
 
 const styles = StyleSheet.create({
   container: {
-    height: 30,
-    width: '75%',
+    height: 50,
+    width: "75%",
     marginBottom: 15,
     borderColor: colors.unfocus,
     borderWidth: 1,
@@ -41,10 +47,9 @@ const styles = StyleSheet.create({
     color: colors.light,
   },
   inputFocused: {
-    borderWidth: 3,
+    borderWidth: 1,
     borderColor: colors.cta,
   },
 });
 
-
-export default AppTextInput; 
+export default AppTextInput;
