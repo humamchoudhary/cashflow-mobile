@@ -8,6 +8,8 @@ import React, { useState } from "react";
 const WalletScreen = () => {
   const [progressDaily, setProgressDaily] = useState(0.5);
   const [progressMonthly, setProgressMonthly] = useState(0.05);
+  const [revealCardNumber, setRevealCardNumber] = useState(false);
+
 
   const [fontsLoaded] = useFonts({
     Regular: require("../fonts/Inter-Regular.ttf"),
@@ -16,6 +18,9 @@ const WalletScreen = () => {
     Bold: require("../fonts/Inter-Bold.ttf"),
     Italic: require("../fonts/Lato-BoldItalic.ttf"),
   });
+  const handleReveal = (value) => {
+    setRevealCardNumber(value);
+  };
 
   if (fontsLoaded) {
     return (
@@ -71,7 +76,7 @@ const WalletScreen = () => {
                 <Text
                   style={{ fontFamily: "Bold", fontSize: 24, color: "#FFF" }}
                 >
-                  xxxx-xxxx-xxxx-xxxx
+                  {revealCardNumber ? "1234-5678-9012-3456" : "xxxx-xxxx-xxxx-xxxx"}
                 </Text>
                 <Text
                   style={{ fontFamily: "Medium", fontSize: 18, color: "#FFF" }}
@@ -105,6 +110,7 @@ const WalletScreen = () => {
                 style={{ textAlign: "right", transform: [{ rotate: "90deg" }] }}
               />
 
+              <View>
               <Text
                 style={{
                   fontFamily: "Medium",
@@ -113,8 +119,20 @@ const WalletScreen = () => {
                   textAlign: "right",
                 }}
               >
-                xx/xx
+                {revealCardNumber ? "12/27" : "xx/xx"}
               </Text>
+              <Text
+                style={{
+                  fontFamily: "Medium",
+                  fontSize: 18,
+                  color: "#FFF",
+                  textAlign: "right",
+                }}
+              >
+                {revealCardNumber ? "789" : "xxx"}
+              </Text>
+              </View>
+              
             </View>
           </View>
         </LinearGradient>
@@ -126,7 +144,7 @@ const WalletScreen = () => {
             marginTop: 20,
           }}
         >
-          <View style={{ ...styles.button, ...styles.btnRed }}>
+          <View style={{ ...styles.button, ...styles.btnRed }} onTouchEndCapture={()=>{handleReveal(!revealCardNumber)}}>
             <Text style={{ color: colors.light, fontSize: 16 }}>Reveal</Text>
           </View>
           <View style={{ ...styles.button, ...styles.btnOrg }}>

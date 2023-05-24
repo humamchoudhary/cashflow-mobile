@@ -1,9 +1,12 @@
-import { View, Text } from "react-native";
+import { View, Linking, Text } from "react-native";
 import { colors } from "../../utils";
 import { useFonts } from "expo-font";
 import { AntDesign, Feather, Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import { useNavigation } from '@react-navigation/native';
 const Profile = () => {
+  const navigation = useNavigation();
+
   const [fontsLoaded] = useFonts({
     Regular: require("../fonts/Inter-Regular.ttf"),
     Medium: require("../fonts/Inter-Medium.ttf"),
@@ -11,6 +14,11 @@ const Profile = () => {
     Bold: require("../fonts/Inter-Bold.ttf"),
     Italic: require("../fonts/Lato-BoldItalic.ttf"),
   });
+  const handleCustomerServicePress = (url) => {
+    // Replace the URL with the actual customer service web page URL
+    Linking.openURL(url);
+  };
+
 
   return (
     <View
@@ -154,7 +162,12 @@ const Profile = () => {
           borderTopColor: "grey",
           borderTopWidth: 2,
         }}
+        onTouchEndCapture={() => {
+          handleCustomerServicePress('https://gogoanime.cl/')
+        }}
+
       >
+
         <View
           style={{
             backgroundColor: colors.bg,
@@ -164,6 +177,7 @@ const Profile = () => {
         >
           <Feather name="phone" size={15} color={colors.cta} />
         </View>
+
         <View
           style={{
             flexDirection: "column",
@@ -189,6 +203,9 @@ const Profile = () => {
           flexDirection: "row",
           gap: 20,
         }}
+        onTouchEndCapture={() => {
+          handleCustomerServicePress('https://chat.openai.com/')
+        }}
       >
         <View
           style={{
@@ -210,6 +227,7 @@ const Profile = () => {
             flex: 2,
             marginTop: 20,
           }}
+
         >
           <Text
             style={{
@@ -227,6 +245,9 @@ const Profile = () => {
           display: "flex",
           flexDirection: "row",
           gap: 20,
+        }}
+        onTouchEndCapture={() => {
+          handleCustomerServicePress('https://www.youtube.com/')
         }}
       >
         <View
@@ -273,6 +294,9 @@ const Profile = () => {
           display: "flex",
           flexDirection: "row",
           gap: 20,
+        }}
+        onTouchEndCapture={() => {
+          navigation.navigate('Login')
         }}
       >
         <View
