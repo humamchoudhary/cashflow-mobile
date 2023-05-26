@@ -4,6 +4,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   TextInput,
+  Image, // Import Image component
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import AppTextInput from "../components/AppTextInput";
@@ -11,6 +12,9 @@ import { useNavigation } from "@react-navigation/native";
 import { colors, URL } from "../../utils";
 import { useDispatch } from "react-redux";
 import { LinearGradient } from "expo-linear-gradient";
+
+// Import your logo image
+import Logo from "../../assets/logo.png";
 
 const Login = () => {
   const navigation = useNavigation();
@@ -31,6 +35,7 @@ const Login = () => {
 
     fetchData();
   }, [user]);
+
   const handleLogin = async () => {
     const response = await fetch(`${URL}/login`, {
       method: "POST",
@@ -46,16 +51,10 @@ const Login = () => {
   };
 
   return (
-    <View
-      style={{
-        width: "100%",
-        height: "100%",
-        flex: 1,
-        backgroundColor: colors.bg,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
+    <View style={styles.container}>
+      {/* Display the logo */}
+      <Image source={Logo} style={styles.logo} />
+
       <AppTextInput
         value={username}
         setValue={setUsername}
@@ -74,33 +73,11 @@ const Login = () => {
           start={{ x: 0, y: 0.09 }}
           end={{ x: 1.5, y: 1.5 }}
           angle={102}
-          style={{
-            borderRadius: 5,
-            borderRadius: 5,
-            width: 90,
-            height: 40,
-            justifyContent: "center",
-            // paddingLeft: 25,
-            color: colors.light,
-            alignItems: "center",
-          }}
+          style={styles.loginButton}
         >
-          <Text style={{ color: colors.light }}>Login</Text>
+          <Text style={styles.loginButtonText}>Login</Text>
         </LinearGradient>
       </TouchableOpacity>
-
-      {/* <TouchableOpacity style={{   backgroundColor: colors.cta,
-            marginTop:10,
-            borderRadius: 40,
-            width: 80,
-            height: 30,
-            justifyContent:'center',
-            paddingLeft:20
-            } } onPress={()=>{
-              navigation.navigate('Signup');
-            }}>
-          <Text >SignUp</Text>
-        </TouchableOpacity> */}
     </View>
   );
 };
@@ -109,6 +86,23 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.bg,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  logo: {
+    width: 150,
+    height: 150,
+    marginBottom: 20,
+  },
+  loginButton: {
+    borderRadius: 5,
+    width: 90,
+    height: 40,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  loginButtonText: {
+    color: colors.light,
   },
 });
 

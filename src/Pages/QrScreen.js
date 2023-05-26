@@ -10,9 +10,11 @@ import { BarCodeScanner } from "expo-barcode-scanner";
 import { colors } from "../../utils";
 import { LinearGradient } from "expo-linear-gradient";
 import AppTextInput from "../components/AppTextInput";
+import {Menu,Divider,Provider} from 'react-native-paper'
 export default function QrScreen() {
   const [scanned, setScanned] = useState(false);
   const [data, setData] = useState("");
+
 
   const handleBarCodeScanned = ({ data }) => {
     setScanned(true);
@@ -47,7 +49,16 @@ export default function QrScreen() {
 }
 function TransactionScreen({ data }) {
   const [amount, setAmount] = useState("");
-  const handleTransaction = () => {};
+  const [visible, setVisible] = useState(false);
+  const [selectedType, setSelectedType] = useState(null);
+
+  const handleTransaction = () => {
+    // Logic for handling the transaction
+  };
+
+  const openMenu = () => setVisible(true);
+  const closeMenu = () => setVisible(false);
+  const handleDropdownChange = (itemValue) => setSelectedType(itemValue);
   return (
     <View style={styles.container}>
       <Text
@@ -93,7 +104,7 @@ function TransactionScreen({ data }) {
             textAlign: "center",
           }}
         >
-          Trasection Type
+          Transection Type
         </Text>
         <Text
           style={{
@@ -115,6 +126,34 @@ function TransactionScreen({ data }) {
             alignSelf: "center",
           }}
         />
+      <View style={{ alignSelf: 'center' }}>
+        <Menu
+          visible={visible}
+          onDismiss={closeMenu}
+          anchor={
+            <TouchableOpacity onPress={openMenu}>
+              <Text style={{ fontSize: 16 }}>
+                {selectedType ? selectedType : "Select Transaction Type"}
+              </Text>
+            </TouchableOpacity>
+          }
+        >
+          <Menu.Item
+            onPress={() => handleDropdownChange('Option 1')}
+            title="Option 1"
+          />
+          <Divider />
+          <Menu.Item
+            onPress={() => handleDropdownChange('Option 2')}
+            title="Option 2"
+          />
+          <Divider />
+          <Menu.Item
+            onPress={() => handleDropdownChange('Option 3')}
+            title="Option 3"
+          />
+        </Menu>
+      </View>
       </View>
 
       <LinearGradient
