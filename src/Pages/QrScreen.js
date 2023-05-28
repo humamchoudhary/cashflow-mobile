@@ -12,19 +12,19 @@ import { LinearGradient } from "expo-linear-gradient";
 import AppTextInput from "../components/AppTextInput";
 export default function QrScreen() {
   const [scanned, setScanned] = useState(false);
-  const [data, setData] = useState("");
+  const [data, setData] = useState();
 
-  const handleBarCodeScanned = ({ data }) => {
+  const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
-    data = '{"dest_type": "Inter Bank", "destination": "humamch2"}';
+    // data = '{"dest_type": "Inter Bank", "destination": "humamch2"}';
     setData(JSON.parse(data.replace(/'/g, '"')));
+    console.log(data);
   };
-
   useEffect(() => {
     (async () => {
-      handleBarCodeScanned(
-        '{"dest_type": "Inter Bank", "destination": "humamch2"}'
-      );
+      // handleBarCodeScanned(
+      //   '{"dest_type": "Inter Bank", "destination": "humamch2"}'
+      // );
       const { status } = await BarCodeScanner.requestPermissionsAsync();
       if (status === "granted") {
         setScanned(false);
@@ -93,7 +93,7 @@ function TransactionScreen({ data }) {
             textAlign: "center",
           }}
         >
-          Trasection Type
+          Trasaction Type
         </Text>
         <Text
           style={{
