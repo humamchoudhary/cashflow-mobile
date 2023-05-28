@@ -3,34 +3,41 @@ import { colors } from "../../utils";
 import { useFonts } from "expo-font";
 import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useState } from "react";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 import TransactionHistroy from "../components/TransactionHistroy";
 
-
-const SendScreen = ({ navigation }) => {
-  const handleGoBack = () => {
-    navigation.goBack();
-  };
-  
-
-
+const RecieveScreen = ({ setRecieve }) => {
+  function handleGoBack() {
+    setRecieve(false);
+  }
   return (
-    <View style={styles.sendContainer}>
-      <Text style={styles.sendText}>Send Amount Screen</Text>
-      {/* Add any additional content for sending the amount */}
+    <View style={styles.container}>
+      <Text style={styles.buttonText}>RecieveScreen Amount Screen</Text>
       <TouchableOpacity onPress={handleGoBack}>
-        <Text style={styles.goBackText}>Go Back</Text>
+        <Text style={styles.buttonText}>Go Back</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
+
+const SendScreen = ({ setSend }) => {
+  function handleGoBack() {
+    setSend(false);
+  }
+  return (
+    <View style={styles.container}>
+      <Text style={styles.buttonText}>Send Amount Screen</Text>
+      <TouchableOpacity onPress={handleGoBack}>
+        <Text style={styles.buttonText}>Go Back</Text>
       </TouchableOpacity>
     </View>
   );
 };
 
 const Home = ({ user }) => {
-  const [data, setData] = useState({});
+  const [send, setSend] = useState(false);
+  const [recive, setRecieve] = useState(false);
 
-  useEffect(() => {
-    setData(user);
-  }, []);
   const navigation = useNavigation();
 
   const [fontsLoaded] = useFonts({
@@ -42,30 +49,14 @@ const Home = ({ user }) => {
   });
 
   const handleSendPress = () => {
-    navigation.navigate("SendScreen");
+    setSend(true);
   };
-  if (fontsLoaded && data != {}) {
+
+  if (fontsLoaded && Object.keys(user).length > 0 && !send && !recive) {
     return (
       <View style={styles.container}>
-        <Text
-          style={{
-            color: colors.light,
-            fontSize: 15,
-            fontFamily: "Italic",
-          }}
-        >
-          Welcome Back
-        </Text>
-        <Text
-          style={{
-            color: colors.light,
-            fontSize: 25,
-            fontFamily: "Bold",
-            marginBottom: 10,
-          }}
-        >
-          {data.full_name}
-        </Text>
+        <Text style={styles.welcomeText}>Welcome Back</Text>
+        <Text style={styles.fullNameText}>{user.full_name}</Text>
         <LinearGradient
           colors={[colors.cta, colors.purple]}
           start={{ x: 0, y: 0.09 }}
@@ -73,68 +64,41 @@ const Home = ({ user }) => {
           angle={102}
           style={styles.inner}
         >
-          <Text
-            style={{
-              color: "white",
-              fontSize: 15,
-              fontFamily: "Medium",
-              marginTop: 10,
-            }}
-          >
-            Current Balance
+          <Text style={styles.balanceLabel}>Current Balance</Text>
+          <Text style={styles.balanceAmount}>
+            {user.currency} {user.balance}
           </Text>
-          <Text
-            style={{
-              marginTop: -3,
-              color: "white",
-              fontSize: 25,
-              fontFamily: "Bold",
-            }}
-          >
-            {data.currency} {data.balance}
-          </Text>
-          <Text
-            style={{
-              marginTop: 15,
-              color: "white",
-              fontSize: 15,
-              fontFamily: "Medium",
-            }}
-          >
-            This months incoming
-          </Text>
-          <Text
-            style={{
-              marginTop: -2,
-              color: "white",
-              fontSize: 25,
-              fontFamily: "Bold",
-            }}
-          >
-            {data.currency} {data.balance}
+          <Text style={styles.monthlyIncomingLabel}>This month's incoming</Text>
+          <Text style={styles.monthlyIncomingAmount}>
+            {user.currency} {user.balance}
           </Text>
         </LinearGradient>
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            gap: 20,
-            marginTop: 20,
-            marginBottom: 20,
-          }}
-        >
-         <TouchableOpacity style={[styles.button, styles.btnRed]} onPress={handleSendPress}>
-            <Text style={{ color: colors.light, fontSize: 16 }}>Request</Text>
+        <View style={styles.buttonsContainer}>
+          <TouchableOpacity
+            style={[styles.button, styles.btnRed]}
+            onPress={() => {
+              setRecieve(true);
+            }}
+          >
+            <Text style={styles.buttonText}>Request</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.button, styles.btnOrg]} onPress={handleSendPress}>
-            <Text style={{ color: colors.light, fontSize: 16 }}>Send</Text>
+          <TouchableOpacity
+            style={[styles.button, styles.btnOrg]}
+            onPress={handleSendPress}
+          >
+            <Text style={styles.buttonText}>Send</Text>
           </TouchableOpacity>
         </View>
-
-        {/* <TransactionHistory/> */}
-        <TransactionHistroy data={data} />
+        <TransactionHistroy data={user} />
       </View>
     );
+  }
+
+  if (send) {
+    return <SendScreen setSend={setSend} />;
+  }
+  if (recive) {
+    return <RecieveScreen setRecieve={setRecieve} />;
   }
 };
 
@@ -146,17 +110,54 @@ const styles = StyleSheet.create({
     paddingTop: 50,
     paddingLeft: 20,
     paddingRight: 20,
-    height: "200%",
-
     backgroundColor: colors.bg,
   },
-
+  welcomeText: {
+    color: colors.light,
+    fontSize: 15,
+    fontFamily: "Italic",
+  },
+  fullNameText: {
+    color: colors.light,
+    fontSize: 25,
+    fontFamily: "Bold",
+    marginBottom: 10,
+  },
   inner: {
     backgroundColor: colors.cta,
     paddingHorizontal: 20,
     paddingVertical: 20,
-    width: "100%",
     borderRadius: 10,
+  },
+  balanceLabel: {
+    color: "white",
+    fontSize: 15,
+    fontFamily: "Medium",
+    marginTop: 10,
+  },
+  balanceAmount: {
+    marginTop: -3,
+    color: "white",
+    fontSize: 25,
+    fontFamily: "Bold",
+  },
+  monthlyIncomingLabel: {
+    marginTop: 15,
+    color: "white",
+    fontSize: 15,
+    fontFamily: "Medium",
+  },
+  monthlyIncomingAmount: {
+    marginTop: -2,
+    color: "white",
+    fontSize: 25,
+    fontFamily: "Bold",
+  },
+  buttonsContainer: {
+    flexDirection: "row",
+    gap: 20,
+    marginTop: 20,
+    marginBottom: 20,
   },
   btnRed: { backgroundColor: colors.red },
   btnOrg: { backgroundColor: colors.orange },
@@ -167,13 +168,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  transection: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginVertical: 10,
-    gap: 20,
-    justifyContent: "center",
+  buttonText: {
+    color: colors.light,
+    fontSize: 16,
   },
 });
-
-export { SendScreen };

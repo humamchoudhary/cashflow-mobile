@@ -4,9 +4,8 @@ import { useFonts } from "expo-font";
 import { Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useState } from "react";
-
 const TransactionHistroy = ({ data }) => {
-  if (data.transaction_log.length === 0) {
+  if (!data || !data.transaction_log || data.transaction_log.length === 0) {
     return (
       <View
         style={{
@@ -16,46 +15,36 @@ const TransactionHistroy = ({ data }) => {
           paddingBottom: "20%",
         }}
       >
-        <Text style={{ color: colors.unfocus }}>No Transaction</Text>
+        <Text style={{ color: colors.unfocus }}>No Transactions</Text>
       </View>
     );
   } else {
     return (
-      <ScrollView styles={{ paddingTop: "20px" }}>
-        {data.transaction_log.map((transection, index) => {
+      <ScrollView style={{ paddingTop: 20 }}>
+        {data.transaction_log.map((transaction, index) => {
           return (
-            <View style={styles.transection} key={index}>
+            <View style={styles.transaction} key={index}>
               <View
                 style={{
                   backgroundColor:
-                    transection.transection == "incoming"
+                    transaction.transaction === "incoming"
                       ? colors.green
                       : colors.red,
                   borderRadius: 10000,
                   padding: 10,
                 }}
               >
-                {transection.transection == "incoming" ? (
-                  <Feather
-                    name="arrow-down-left"
-                    size={24}
-                    color={colors.light}
-                  />
-                ) : (
-                  <Feather
-                    name="arrow-up-right"
-                    size={24}
-                    color={colors.light}
-                  />
-                )}
+                <Feather
+                  name={
+                    transaction.transaction === "incoming"
+                      ? "arrow-down-left"
+                      : "arrow-up-right"
+                  }
+                  size={24}
+                  color={colors.light}
+                />
               </View>
-              <View
-                style={{
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  flex: 2,
-                }}
-              >
+              <View style={{ flex: 2 }}>
                 <Text
                   style={{
                     color: colors.light,
@@ -63,7 +52,7 @@ const TransactionHistroy = ({ data }) => {
                     fontFamily: "SemiBold",
                   }}
                 >
-                  {transection.destination}
+                  {transaction.destination}
                 </Text>
                 <Text
                   style={{
@@ -72,7 +61,7 @@ const TransactionHistroy = ({ data }) => {
                     fontFamily: "Regular",
                   }}
                 >
-                  {transection.type}
+                  {transaction.type}
                 </Text>
               </View>
               <Text
@@ -82,7 +71,7 @@ const TransactionHistroy = ({ data }) => {
                   fontFamily: "SemiBold",
                 }}
               >
-                $40.99
+                ${transaction.amount}
               </Text>
             </View>
           );
@@ -121,7 +110,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  transection: {
+  transaction: {
     flexDirection: "row",
     alignItems: "center",
     marginVertical: 10,

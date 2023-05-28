@@ -15,25 +15,25 @@ import { LinearGradient } from "expo-linear-gradient";
 import { LineChart } from "react-native-chart-kit";
 const Width = Dimensions.get("window").width;
 
-const Stats = () => {
+const Stats = ({ user }) => {
   const [screen, setScreen] = useState(1);
   const [animatedValue] = useState(new Animated.Value(0));
 
-  const data = {
-    labels: ["January", "February", "March", "April", "May", "June"],
+  const Expensedata = {
+    labels: user.months,
     datasets: [
       {
-        data: [20, 45, 28, 80, 99, 43],
+        data: user.expense,
         color: (opacity = 1) => `${colors.cta}`, // optional
         strokeWidth: 2, // optional
       },
     ],
   };
-  const data2 = {
-    labels: ["January", "February", "March", "April", "May", "June"],
+  const IncomeData = {
+    labels: user.months,
     datasets: [
       {
-        data: [12, 5, 30, 40, 22, 43],
+        data: user.income,
         color: (opacity = 1) => `${colors.purple}`, // optional
         strokeWidth: 2, // optional
       },
@@ -80,7 +80,7 @@ const Stats = () => {
         >
           Balance Overview
         </Text>
-        
+
         <View
           style={{
             display: "flex",
@@ -101,9 +101,7 @@ const Stats = () => {
               handleButtonClick(0);
             }}
           >
-            <Text style={{ color: colors.light, fontSize: 16 }}>
-              Expenses
-            </Text>
+            <Text style={{ color: colors.light, fontSize: 16 }}>Expenses</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -144,7 +142,7 @@ const Stats = () => {
             }}
           >
             <LineChart
-              data={data}
+              data={Expensedata}
               width={Width}
               height={220}
               chartConfig={chartConfig}
@@ -168,7 +166,7 @@ const Stats = () => {
             }}
           >
             <LineChart
-              data={data2}
+              data={IncomeData}
               width={Width}
               height={220}
               chartConfig={chartConfig}
@@ -181,10 +179,10 @@ const Stats = () => {
             />
           </View>
         )}
-      
+
         <ScrollView>
           {}
-          <TransactionHistroy data={data} />
+          <TransactionHistroy data={user} />
         </ScrollView>
       </View>
     );
