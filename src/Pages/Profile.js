@@ -4,7 +4,13 @@ import { useFonts } from "expo-font";
 import { AntDesign, Feather, Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from '@react-navigation/native';
-const Profile = () => {
+import { useState ,useEffect} from "react";
+const Profile = ({user}) => {
+  const [data, setData] = useState({});
+
+  useEffect(() => {
+    setData(user);
+  }, []);
   const navigation = useNavigation();
 
   const [fontsLoaded] = useFonts({
@@ -62,6 +68,7 @@ const Profile = () => {
       >
         Name
       </Text>
+   
       <Text
         style={{
           color: colors.light,
@@ -72,9 +79,36 @@ const Profile = () => {
           paddingRight: 25,
         }}
       >
-        Muhammad Rafay Qureshi
+        {data.full_name}
       </Text>
 
+      
+
+      <Text
+        style={{
+          color: colors.light,
+          fontSize: 15,
+          fontFamily: "Regular",
+          textAlign: "left",
+          paddingTop: 15,
+          paddingLeft: 25,
+          paddingRight: 25,
+        }}
+      >
+        Acc#
+      </Text>
+      <Text
+        style={{
+          color: colors.light,
+          fontSize: 20,
+          fontFamily: "Bold",
+          textAlign: "left",
+          paddingLeft: 25,
+          paddingRight: 25,
+        }}
+      >
+        {data.account_number}
+      </Text>
       <Text
         style={{
           color: colors.light,
@@ -98,60 +132,9 @@ const Profile = () => {
           paddingRight: 25,
         }}
       >
-        rafayqureshi28@gmail.com
+        {data.email}
       </Text>
 
-      <Text
-        style={{
-          color: colors.light,
-          fontSize: 15,
-          fontFamily: "Regular",
-          textAlign: "left",
-          paddingTop: 15,
-          paddingLeft: 25,
-          paddingRight: 25,
-        }}
-      >
-        Ph#
-      </Text>
-      <Text
-        style={{
-          color: colors.light,
-          fontSize: 20,
-          fontFamily: "Bold",
-          textAlign: "left",
-          paddingLeft: 25,
-          paddingRight: 25,
-        }}
-      >
-        03150155088
-      </Text>
-
-      <Text
-        style={{
-          color: colors.light,
-          fontSize: 15,
-          fontFamily: "Regular",
-          textAlign: "left",
-          paddingTop: 10,
-          paddingLeft: 25,
-          paddingRight: 25,
-        }}
-      >
-        CNIC
-      </Text>
-      <Text
-        style={{
-          color: colors.light,
-          fontSize: 20,
-          fontFamily: "Bold",
-          textAlign: "left",
-          paddingLeft: 25,
-          paddingRight: 25,
-        }}
-      >
-        xxxx-xxxxxxx-x
-      </Text>
 
       <View
         style={{
@@ -306,7 +289,7 @@ const Profile = () => {
             paddingLeft: 25,
           }}
         >
-          <Feather name="log-out" size={20} color={colors.cta} />
+          <Feather name="log-out" size={20} color={colors.red} />
         </View>
         <View
           style={{
@@ -318,7 +301,7 @@ const Profile = () => {
         >
           <Text
             style={{
-              color: colors.light,
+              color: colors.red,
               fontSize: 15,
               fontFamily: "Bold",
             }}

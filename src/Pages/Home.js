@@ -1,15 +1,37 @@
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { colors } from "../../utils";
 import { useFonts } from "expo-font";
 import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useState } from "react";
+import { useNavigation } from '@react-navigation/native';
 import TransactionHistroy from "../components/TransactionHistroy";
+
+
+const SendScreen = ({ navigation }) => {
+  const handleGoBack = () => {
+    navigation.goBack();
+  };
+  
+
+
+  return (
+    <View style={styles.sendContainer}>
+      <Text style={styles.sendText}>Send Amount Screen</Text>
+      {/* Add any additional content for sending the amount */}
+      <TouchableOpacity onPress={handleGoBack}>
+        <Text style={styles.goBackText}>Go Back</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
+
 const Home = ({ user }) => {
   const [data, setData] = useState({});
 
   useEffect(() => {
     setData(user);
   }, []);
+  const navigation = useNavigation();
 
   const [fontsLoaded] = useFonts({
     Regular: require("../fonts/Inter-Regular.ttf"),
@@ -18,6 +40,10 @@ const Home = ({ user }) => {
     Bold: require("../fonts/Inter-Bold.ttf"),
     Italic: require("../fonts/Lato-BoldItalic.ttf"),
   });
+
+  const handleSendPress = () => {
+    navigation.navigate("SendScreen");
+  };
   if (fontsLoaded && data != {}) {
     return (
       <View style={styles.container}>
@@ -97,12 +123,12 @@ const Home = ({ user }) => {
             marginBottom: 20,
           }}
         >
-          <View style={{ ...styles.button, ...styles.btnRed }}>
+         <TouchableOpacity style={[styles.button, styles.btnRed]} onPress={handleSendPress}>
             <Text style={{ color: colors.light, fontSize: 16 }}>Request</Text>
-          </View>
-          <View style={{ ...styles.button, ...styles.btnOrg }}>
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.button, styles.btnOrg]} onPress={handleSendPress}>
             <Text style={{ color: colors.light, fontSize: 16 }}>Send</Text>
-          </View>
+          </TouchableOpacity>
         </View>
 
         {/* <TransactionHistory/> */}
@@ -149,3 +175,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
+
+export { SendScreen };

@@ -14,6 +14,8 @@ const WalletScreen = ({ user }) => {
     Bold: require("../fonts/Inter-Bold.ttf"),
     Italic: require("../fonts/Lato-BoldItalic.ttf"),
   });
+  const [isCardActivated, setIsCardActivated] = useState(true);
+
 
   if (fontsLoaded) {
     return (
@@ -29,23 +31,26 @@ const WalletScreen = ({ user }) => {
         >
           My Cards
         </Text>
-
-        <Swiper
-          loop={false}
-          style={styles.swiper}
-          containerStyle={styles.swiperContainer}
-          showsPagination={false}
-        >
-          {user.Cards.map((card, index) => (
-            <Card key={index} details={card} user={user} />
-          ))}
-        </Swiper>
+        {isCardActivated ? (
+          <Swiper
+            loop={false}
+            style={styles.swiper}
+            containerStyle={styles.swiperContainer}
+            showsPagination={false}
+          >
+            {user.Cards.map((card, index) => (
+              <Card key={index} details={card} user={user} index={index} />
+            ))}
+          </Swiper>
+        ) : (
+          <Text style={styles.deactivatedText}>Card Deactivated</Text>
+        )}
       </View>
     );
   }
 };
 
-function Card({ details, user }) {
+function Card({ details, user,index }) {
   const [revealCardNumber, setRevealCardNumber] = useState(false);
   const handleReveal = (value) => {
     setRevealCardNumber(value);
@@ -53,7 +58,7 @@ function Card({ details, user }) {
   return (
     <View style={styles.slide}>
       <LinearGradient
-        colors={[colors.cta, colors.purple]}
+        colors={index==0?[colors.cta, colors.purple]:[colors.purple, colors.cta]}
         start={{ x: 0, y: 0.09 }}
         end={{ x: 1.5, y: 1.5 }}
         angle={102}
@@ -434,6 +439,12 @@ const styles = StyleSheet.create({
     width: "95%",
 
     borderRadius: 15,
+  },
+  deactivatedText: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "red",
+    textAlign: "center",
   },
   btnRed: { backgroundColor: colors.red },
   btnOrg: { backgroundColor: colors.orange },

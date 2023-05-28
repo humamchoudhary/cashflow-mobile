@@ -10,6 +10,7 @@ import {
 import { colors } from "../../utils";
 import { useFonts } from "expo-font";
 import React, { useState } from "react";
+import TransactionHistroy from "../components/TransactionHistroy";
 import { LinearGradient } from "expo-linear-gradient";
 import { LineChart } from "react-native-chart-kit";
 const Width = Dimensions.get("window").width;
@@ -79,187 +80,119 @@ const Stats = () => {
         >
           Balance Overview
         </Text>
-        {/* <LinearGradient
-          colors={[colors.cta, colors.purple]}
-          start={{ x: 0, y: 0.09 }}
-          end={{ x: 1.5, y: 1.5 }}
-          angle={102}
-          style={styles.inner}
+        
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            gap: 20,
+            marginTop: 20,
+            backgroundColor: "gray",
+            borderRadius: 10,
+            position: "relative",
+          }}
         >
-          <Text
-            style={{
-              color: "white",
-              fontSize: 15,
-              fontFamily: "Medium",
-              textAlign: "center",
+          <TouchableOpacity
+            style={{ ...styles.button }}
+            title="Screen1"
+            color="#841584"
+            onPress={() => {
+              setScreen(1);
+              handleButtonClick(0);
             }}
           >
-            Current Balance
-          </Text>
-          <Text
-            style={{
-              marginTop: -3,
-              color: "white",
-              fontSize: 30,
-              fontFamily: "SemiBold",
-              textAlign: "center",
+            <Text style={{ color: colors.light, fontSize: 16 }}>
+              Expenses
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={{ ...styles.button }}
+            title="Screen2"
+            color="#841584"
+            onPress={() => {
+              setScreen(2);
+              handleButtonClick(Width / 2 - 20);
             }}
           >
-            {data.currency} {data.balance}
-          </Text>
-          <Text
-            style={{
-              marginTop: 5,
-              color: "white",
-              fontSize: 15,
-              fontFamily: "Medium",
-              textAlign: "center",
-            }}
-          >
-            This months incoming
-          </Text>
-          <Text
-            style={{
-              marginTop: -2,
-              color: "white",
-              fontSize: 30,
-              fontFamily: "SemiBold",
-              textAlign: "center",
-            }}
-          >
-            {data.currency} {data.months_income}
-          </Text>
-          <Text
-            style={{
-              marginTop: 5,
-              color: "white",
-              fontSize: 15,
-              fontFamily: "Medium",
-              textAlign: "center",
-            }}
-          >
-            Total saving
-          </Text>
-          <Text
-            style={{
-              marginTop: 5,
-              color: "white",
-              fontSize: 25,
-              fontFamily: "SemiBold",
-              textAlign: "center",
-            }}
-          >
-            {data.currency} {data.savings}
-          </Text>
-        </LinearGradient> */}
-        <ScrollView>
+            <Text style={{ color: colors.light, fontSize: 16 }}>Income</Text>
+          </TouchableOpacity>
+          <Animated.View
+            style={[
+              { ...styles.button },
+              {
+                backgroundColor: colors.red,
+                position: "absolute",
+                width: "50%",
+                height: "100%",
+                zIndex: -1,
+                left: 0,
+                transform: [{ translateX: animatedValue }],
+              },
+            ]}
+          ></Animated.View>
+        </View>
+        {screen == 1 ? (
           <View
             style={{
               display: "flex",
-              flexDirection: "row",
-              gap: 20,
-              marginTop: 20,
-              backgroundColor: "gray",
-              borderRadius: 10,
-              position: "relative",
+              flexDirection: "column",
+              justifyContent: "center",
+              marginVertical: 20,
+              alignItems: "center",
+              paddingLeft: 10,
             }}
           >
-            <TouchableOpacity
-              style={{ ...styles.button }}
-              title="Screen1"
-              color="#841584"
-              onPress={() => {
-                setScreen(1);
-                handleButtonClick(0);
+            <LineChart
+              data={data}
+              width={Width}
+              height={220}
+              chartConfig={chartConfig}
+              bezier
+              style={{
+                marginVertical: 20,
+                transform: [{ translateX: -20 }],
               }}
-            >
-              <Text style={{ color: colors.light, fontSize: 16 }}>
-                Expenses
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={{ ...styles.button }}
-              title="Screen2"
-              color="#841584"
-              onPress={() => {
-                setScreen(2);
-                handleButtonClick(Width / 2 - 20);
-              }}
-            >
-              <Text style={{ color: colors.light, fontSize: 16 }}>Income</Text>
-            </TouchableOpacity>
-            <Animated.View
-              style={[
-                { ...styles.button },
-                {
-                  backgroundColor: colors.red,
-                  position: "absolute",
-                  width: "50%",
-                  height: "100%",
-                  zIndex: -1,
-                  left: 0,
-                  transform: [{ translateX: animatedValue }],
-                },
-              ]}
-            ></Animated.View>
+              withVerticalLines={false}
+            />
           </View>
-          {screen == 1 ? (
-            <View
+        ) : (
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              marginVertical: 20,
+              alignItems: "center",
+              paddingLeft: 10,
+            }}
+          >
+            <LineChart
+              data={data2}
+              width={Width}
+              height={220}
+              chartConfig={chartConfig}
+              bezier
               style={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
                 marginVertical: 20,
-                alignItems: "center",
-                paddingLeft: 10,
+                transform: [{ translateX: -20 }],
               }}
-            >
-              <LineChart
-                data={data}
-                width={Width}
-                height={220}
-                chartConfig={chartConfig}
-                bezier
-                style={{
-                  marginVertical: 20,
-                  transform: [{ translateX: -20 }],
-                }}
-                withVerticalLines={false}
-              />
-            </View>
-          ) : (
-            <View
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                marginVertical: 20,
-                alignItems: "center",
-                paddingLeft: 10,
-              }}
-            >
-              <LineChart
-                data={data2}
-                width={Width}
-                height={220}
-                chartConfig={chartConfig}
-                bezier
-                style={{
-                  marginVertical: 20,
-                  transform: [{ translateX: -20 }],
-                }}
-                withVerticalLines={false}
-              />
-            </View>
-          )}
+              withVerticalLines={false}
+            />
+          </View>
+        )}
+      
+        <ScrollView>
+          {}
+          <TransactionHistroy data={data} />
         </ScrollView>
       </View>
     );
+  } else {
+    return null;
   }
 };
 
-export default Stats;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -267,10 +200,8 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 20,
     height: "200%",
-
     backgroundColor: colors.bg,
   },
-
   inner: {
     backgroundColor: colors.cta,
     padding: 10,
@@ -286,4 +217,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  transection: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginVertical: 10,
+    gap: 20,
+    justifyContent: "center",
+  },
 });
+
+export default Stats;
