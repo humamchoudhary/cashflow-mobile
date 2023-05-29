@@ -11,6 +11,8 @@ import { colors } from "../../utils";
 import { LinearGradient } from "expo-linear-gradient";
 import AppTextInput from "../components/AppTextInput";
 import { Menu, Divider, Provider } from "react-native-paper";
+
+
 export default function QrScreen() {
   const [scanned, setScanned] = useState(false);
   const [data, setData] = useState();
