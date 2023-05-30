@@ -187,7 +187,8 @@ const Profile = ({user}) => {
           gap: 20,
         }}
         onTouchEndCapture={() => {
-          handleCustomerServicePress('https://chat.openai.com/')
+          Linking.openURL('http://localhost:3000/private')
+
         }}
       >
         <View
@@ -230,7 +231,7 @@ const Profile = ({user}) => {
           gap: 20,
         }}
         onTouchEndCapture={() => {
-          handleCustomerServicePress('https://www.youtube.com/')
+          Linking.openURL('http://localhost:3000/terms')
         }}
       >
         <View
