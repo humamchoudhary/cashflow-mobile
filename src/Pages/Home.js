@@ -10,7 +10,7 @@ import {
 import { useFonts } from "expo-font";
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, Feather } from "@expo/vector-icons";
 import TransactionHistroy from "../components/TransactionHistroy";
 import AppTextInput from "../components/AppTextInput";
 import { URL, colors } from "../../utils";
@@ -252,7 +252,7 @@ const Home = ({ user, setUser }) => {
         >
           <Text style={styles.fullNameText}>{user.full_name}</Text>
           <TouchableOpacity onPress={handleLogin} style={styles.fullNameText}>
-            <Text style={{ color: "#fff" }}>refresh</Text>
+            <Feather name="refresh-cw" size={24} color="white" />
           </TouchableOpacity>
         </View>
         <LinearGradient

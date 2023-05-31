@@ -10,4 +10,4 @@ export const colors = {
   green2: "#b0fc38",
 };
 
-export const URL = "http://192.168.27.249:5000";
+export const URL = "http://192.168.10.5:5000";
