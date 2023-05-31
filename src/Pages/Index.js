@@ -75,7 +75,7 @@ const Index = () => {
             ),
           }}
         >
-          {() => <Home user={user} />}
+          {() => <Home user={user} setUser={setUser} />}
         </Tab.Screen>
 
         <Tab.Screen

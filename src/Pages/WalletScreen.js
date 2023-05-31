@@ -16,7 +16,6 @@ const WalletScreen = ({ user }) => {
   });
   const [isCardActivated, setIsCardActivated] = useState(true);
 
-
   if (fontsLoaded) {
     return (
       <View style={styles.container}>
@@ -50,7 +49,7 @@ const WalletScreen = ({ user }) => {
   }
 };
 
-function Card({ details, user,index }) {
+function Card({ details, user, index }) {
   const [revealCardNumber, setRevealCardNumber] = useState(false);
   const handleReveal = (value) => {
     setRevealCardNumber(value);
@@ -58,7 +57,9 @@ function Card({ details, user,index }) {
   return (
     <View style={styles.slide}>
       <LinearGradient
-        colors={index==0?[colors.cta, colors.purple]:[colors.purple, colors.cta]}
+        colors={
+          index == 0 ? [colors.cta, colors.purple] : [colors.purple, colors.cta]
+        }
         start={{ x: 0, y: 0.09 }}
         end={{ x: 1.5, y: 1.5 }}
         angle={102}
@@ -188,9 +189,6 @@ function Card({ details, user,index }) {
           }}
         >
           <Text style={{ color: colors.light, fontSize: 16 }}>Reveal</Text>
-        </View>
-        <View style={{ ...styles.button, ...styles.btnOrg }}>
-          <Text style={{ color: colors.light, fontSize: 16 }}>Deactivate</Text>
         </View>
       </View>
 

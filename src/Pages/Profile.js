@@ -3,9 +3,9 @@ import { colors } from "../../utils";
 import { useFonts } from "expo-font";
 import { AntDesign, Feather, Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import { useNavigation } from '@react-navigation/native';
-import { useState ,useEffect} from "react";
-const Profile = ({user}) => {
+import { useNavigation } from "@react-navigation/native";
+import { useState, useEffect } from "react";
+const Profile = ({ user }) => {
   const [data, setData] = useState({});
 
   useEffect(() => {
@@ -24,7 +24,6 @@ const Profile = ({user}) => {
     // Replace the URL with the actual customer service web page URL
     Linking.openURL(url);
   };
-
 
   return (
     <View
@@ -68,7 +67,7 @@ const Profile = ({user}) => {
       >
         Name
       </Text>
-   
+
       <Text
         style={{
           color: colors.light,
@@ -81,8 +80,6 @@ const Profile = ({user}) => {
       >
         {data.full_name}
       </Text>
-
-      
 
       <Text
         style={{
@@ -135,7 +132,6 @@ const Profile = ({user}) => {
         {data.email}
       </Text>
 
-
       <View
         style={{
           display: "flex",
@@ -145,41 +141,7 @@ const Profile = ({user}) => {
           borderTopColor: "grey",
           borderTopWidth: 2,
         }}
-        onTouchEndCapture={() => {
-          handleCustomerServicePress('https://gogoanime.cl/')
-        }}
-
-      >
-
-        <View
-          style={{
-            backgroundColor: colors.bg,
-            marginTop: 20,
-            paddingLeft: 25,
-          }}
-        >
-          <Feather name="phone" size={15} color={colors.cta} />
-        </View>
-
-        <View
-          style={{
-            flexDirection: "column",
-            justifyContent: "center",
-            flex: 2,
-            marginTop: 20,
-          }}
-        >
-          <Text
-            style={{
-              color: colors.light,
-              fontSize: 15,
-              fontFamily: "Bold",
-            }}
-          >
-            Customer Service
-          </Text>
-        </View>
-      </View>
+      ></View>
       <View
         style={{
           display: "flex",
@@ -187,8 +149,7 @@ const Profile = ({user}) => {
           gap: 20,
         }}
         onTouchEndCapture={() => {
-          Linking.openURL('http://localhost:3000/private')
-
+          Linking.openURL("http://192.168.27.249:3000/policy");
         }}
       >
         <View
@@ -211,7 +172,6 @@ const Profile = ({user}) => {
             flex: 2,
             marginTop: 20,
           }}
-
         >
           <Text
             style={{
@@ -231,7 +191,7 @@ const Profile = ({user}) => {
           gap: 20,
         }}
         onTouchEndCapture={() => {
-          Linking.openURL('http://localhost:3000/terms')
+          Linking.openURL("http://192.168.27.249:3000/terms");
         }}
       >
         <View
@@ -280,7 +240,7 @@ const Profile = ({user}) => {
           gap: 20,
         }}
         onTouchEndCapture={() => {
-          navigation.navigate('Login')
+          navigation.navigate("Login");
         }}
       >
         <View

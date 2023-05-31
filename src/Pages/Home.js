@@ -1,21 +1,20 @@
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
-  TextInput,
-  ActivityIndicator,
   Image,
+  ActivityIndicator,
 } from "react-native";
-import { colors } from "../../utils";
 import { useFonts } from "expo-font";
 import { LinearGradient } from "expo-linear-gradient";
-import { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
 import TransactionHistroy from "../components/TransactionHistroy";
-import { Ionicons, AntDesign } from "@expo/vector-icons";
 import AppTextInput from "../components/AppTextInput";
-
+import { URL, colors } from "../../utils";
+import { useDispatch } from "react-redux";
 const RecieveScreen = ({ setRecieve, data }) => {
   const [imageUrl, setImageUrl] = useState();
   const [loading, setLoading] = useState(true);
@@ -81,25 +80,57 @@ const RecieveScreen = ({ setRecieve, data }) => {
   );
 };
 
-const DropdownMenu = ({ options, onSelectOption }) => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(null);
+const SendScreen = ({ setSend, data }) => {
+  const [amount, setAmount] = useState();
+  const [accnumber, setAccnumber] = useState();
+  const [reason, setReason] = useState();
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
+  const handleFormSubmit = async () => {
+    const transaction = {
+      mode: "Online transaction",
+      transaction: "outgoing",
+      destination: accnumber,
+      amount: amount,
+      type: reason,
+      dest_type: "Inter Bank",
+      username: data.username,
+    };
+    try {
+      const response = await fetch(`${URL}/make_transaction`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(transaction),
+      });
+
+      if (response.ok) {
+        const ret = await response.json();
+        console.log(ret);
+        if (ret.success) {
+          setSend(false);
+        } else {
+          setError(true);
+          setErrorMessage(ret.message);
+        }
+      }
+    } catch (e) {
+      setError(true);
+      console.log(e);
+      setErrorMessage("An error occurred while sending the transaction.");
+    }
   };
-};
-const SendScreen = ({ setSend }) => {
-  const [amount, setamount] = useState();
-  const [accnumber, setaccnumber] = useState();
-  const [reason, setreason] = useState();
 
   function handleGoBack() {
     setSend(false);
   }
+
   function handleSend() {
-    setSend(true);
+    handleFormSubmit();
   }
+
   return (
     <View style={styles.container}>
       <Text style={[styles.buttonText, { fontSize: 18, textAlign: "center" }]}>
@@ -116,6 +147,7 @@ const SendScreen = ({ setSend }) => {
           <Ionicons name="arrow-back-circle-outline" size={30} color="red" />
         </View>
       </TouchableOpacity>
+
       <View
         style={{
           flex: 1,
@@ -125,50 +157,25 @@ const SendScreen = ({ setSend }) => {
       >
         <AppTextInput
           value={accnumber}
-          setValue={setaccnumber}
+          setValue={setAccnumber}
           placeholder="Account number"
           accnumber={true}
         />
         <AppTextInput
           value={amount}
-          setValue={setamount}
+          setValue={setAmount}
           placeholder="Amount"
           amount={true}
         />
         <AppTextInput
           value={reason}
-          setValue={setreason}
+          setValue={setReason}
           placeholder="Reason for transaction"
           reason={true}
         />
-        <View style={{ alignSelf: "center" }}>
-          <Menu
-            visible={visible}
-            onDismiss={closeMenu}
-            anchor={
-              <TouchableOpacity onPress={openMenu}>
-                <Text style={{ fontSize: 16 }}>
-                  {selectedType ? selectedType : "Select Transaction Reascon"}
-                </Text>
-              </TouchableOpacity>
-            }
-          >
-            <Menu.Item
-              onPress={() => handleDropdownChange("Option 1")}
-              title="Option 1"
-            />
-            <Divider />
-            <Menu.Item
-              onPress={() => handleDropdownChange("Option 2")}
-              title="Option 2"
-            />
-            <Divider />
-            <Menu.Item
-              onPress={() => handleDropdownChange("Option 3")}
-              title="Option 3"
-            />
-          </Menu>
-        </View>
+
+        {error && <Text style={{ color: "#ff0000" }}>{errorMessage}</Text>}
+
         <TouchableOpacity onPress={handleSend}>
           <LinearGradient
             colors={[colors.cta, colors.purple]}
@@ -185,11 +192,11 @@ const SendScreen = ({ setSend }) => {
   );
 };
 
-const Home = ({ user }) => {
+const Home = ({ user, setUser }) => {
   const [send, setSend] = useState(false);
   const [recive, setRecieve] = useState(false);
-
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const [fontsLoaded] = useFonts({
     Regular: require("../fonts/Inter-Regular.ttf"),
@@ -203,11 +210,51 @@ const Home = ({ user }) => {
     setSend(true);
   };
 
+  useEffect(() => {
+    async function fetchData() {
+      if (user) {
+        dispatch({ type: "SET_USER", payload: user });
+
+        navigation.navigate("Index");
+      }
+    }
+
+    fetchData();
+  }, [user]);
+
+  const handleLogin = async () => {
+    const response = await fetch(`${URL}/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: user.username,
+        password: user.password,
+      }),
+    });
+    if (response.ok) {
+      const userData = await response.json();
+      setUser(userData);
+    }
+  };
+
   if (fontsLoaded && Object.keys(user).length > 0 && !send && !recive) {
     return (
       <View style={styles.container}>
         <Text style={styles.welcomeText}>Welcome Back</Text>
-        <Text style={styles.fullNameText}>{user.full_name}</Text>
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}
+        >
+          <Text style={styles.fullNameText}>{user.full_name}</Text>
+          <TouchableOpacity onPress={handleLogin} style={styles.fullNameText}>
+            <Text style={{ color: "#fff" }}>refresh</Text>
+          </TouchableOpacity>
+        </View>
         <LinearGradient
           colors={[colors.cta, colors.purple]}
           start={{ x: 0, y: 0.09 }}
@@ -246,7 +293,7 @@ const Home = ({ user }) => {
   }
 
   if (send) {
-    return <SendScreen setSend={setSend} />;
+    return <SendScreen setSend={setSend} data={user} />;
   }
   if (recive) {
     return <RecieveScreen setRecieve={setRecieve} data={user.qr} />;

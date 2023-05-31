@@ -1,32 +1,21 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { BarCodeScanner } from "expo-barcode-scanner";
-import { colors } from "../../utils";
+import { URL, colors } from "../../utils";
 import { LinearGradient } from "expo-linear-gradient";
 import AppTextInput from "../components/AppTextInput";
-import { Menu, Divider, Provider } from "react-native-paper";
-
-export default function QrScreen(userData) {
+import { useNavigation } from "@react-navigation/native";
+export default function QrScreen({ user }) {
   const [scanned, setScanned] = useState(false);
   const [data, setData] = useState();
 
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
-    // data = '{"dest_type": "Inter Bank", "destination": "humamch2"}';
     setData(JSON.parse(data.replace(/'/g, '"')));
     console.log(data);
   };
   useEffect(() => {
     (async () => {
-      // handleBarCodeScanned(
-      //   '{"dest_type": "Inter Bank", "destination": "humamch2"}'
-      // );
       const { status } = await BarCodeScanner.requestPermissionsAsync();
       if (status === "granted") {
         setScanned(false);
@@ -42,25 +31,25 @@ export default function QrScreen(userData) {
           style={StyleSheet.absoluteFillObject}
         />
       ) : (
-        <TransactionScreen data={data} />
+        <TransactionScreen setScan={setScanned} data={data} userData={user} />
       )}
     </View>
   );
 }
-function TransactionScreen({ data }) {
+function TransactionScreen({ userData, data, setScan }) {
   const [amount, setAmount] = useState("");
-  const [visible, setVisible] = useState(false);
-  const [selectedType, setSelectedType] = useState(null);
+  const navigation = useNavigation();
 
-  const handleFormSubmit = async () => {
+  const handleTransaction = async () => {
+    console.log(userData);
     const transaction = {
       mode: "Online transaction",
       transaction: "outgoing",
-      username: username,
+      destination: data.destination,
+      username: userData.username,
       amount: amount,
       type: "Misc",
       dest_type: "Inter Bank",
-
     };
     try {
       const response = await fetch(`${URL}/make_transaction`, {
@@ -75,13 +64,10 @@ function TransactionScreen({ data }) {
         const ret = await response.json();
         console.log(ret);
         if (ret.success) {
-          onClose();
+          setScan(false);
+          navigation.navigate("home");
         } else {
-          if (ret.saving_check) {
-            setSaving(true);
-          } else {
-            setError(true);
-          }
+          setError(true);
         }
       }
     } catch (e) {
@@ -89,9 +75,6 @@ function TransactionScreen({ data }) {
     }
   };
 
-  const openMenu = () => setVisible(true);
-  const closeMenu = () => setVisible(false);
-  const handleDropdownChange = (itemValue) => setSelectedType(itemValue);
   return (
     <View style={styles.container}>
       <Text
@@ -153,40 +136,12 @@ function TransactionScreen({ data }) {
         <AppTextInput
           placeholder="Enter Amount"
           value={amount}
-          onChangeText={setAmount}
+          setValue={setAmount}
           keyboardType="numeric"
           style={{
             alignSelf: "center",
           }}
         />
-        <View style={{ alignSelf: "center" }}>
-          <Menu
-            visible={visible}
-            onDismiss={closeMenu}
-            anchor={
-              <TouchableOpacity onPress={openMenu}>
-                <Text style={{ fontSize: 16 }}>
-                  {selectedType ? selectedType : "Select Transaction Type"}
-                </Text>
-              </TouchableOpacity>
-            }
-          >
-            <Menu.Item
-              onPress={() => handleDropdownChange("Option 1")}
-              title="Option 1"
-            />
-            <Divider />
-            <Menu.Item
-              onPress={() => handleDropdownChange("Option 2")}
-              title="Option 2"
-            />
-            <Divider />
-            <Menu.Item
-              onPress={() => handleDropdownChange("Option 3")}
-              title="Option 3"
-            />
-          </Menu>
-        </View>
       </View>
 
       <LinearGradient
