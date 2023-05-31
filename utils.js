@@ -37,4 +37,4 @@ export const sample_data = [
 //   "poppins-bold": "poppins-bold",
 //   "poppins-semiBold": "poppins-semiBold",
 // };
-export const URL = " http://10.4.72.248:5000";
+export const URL = "http://192.168.27.249:5000";

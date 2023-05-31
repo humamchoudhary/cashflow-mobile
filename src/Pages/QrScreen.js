@@ -12,8 +12,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import AppTextInput from "../components/AppTextInput";
 import { Menu, Divider, Provider } from "react-native-paper";
 
-
-export default function QrScreen() {
+export default function QrScreen(userData) {
   const [scanned, setScanned] = useState(false);
   const [data, setData] = useState();
 
@@ -53,8 +52,41 @@ function TransactionScreen({ data }) {
   const [visible, setVisible] = useState(false);
   const [selectedType, setSelectedType] = useState(null);
 
-  const handleTransaction = () => {
-    // Logic for handling the transaction
+  const handleFormSubmit = async () => {
+    const transaction = {
+      mode: "Online transaction",
+      transaction: "outgoing",
+      username: username,
+      amount: amount,
+      type: "Misc",
+      dest_type: "Inter Bank",
+
+    };
+    try {
+      const response = await fetch(`${URL}/make_transaction`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(transaction),
+      });
+
+      if (response.ok) {
+        const ret = await response.json();
+        console.log(ret);
+        if (ret.success) {
+          onClose();
+        } else {
+          if (ret.saving_check) {
+            setSaving(true);
+          } else {
+            setError(true);
+          }
+        }
+      }
+    } catch (e) {
+      setError(true);
+    }
   };
 
   const openMenu = () => setVisible(true);

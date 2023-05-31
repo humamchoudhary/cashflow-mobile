@@ -1,58 +1,81 @@
-import { View, Text, StyleSheet, TouchableOpacity,TextInput,ActivityIndicator ,Image} from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  TextInput,
+  ActivityIndicator,
+  Image,
+} from "react-native";
 import { colors } from "../../utils";
 import { useFonts } from "expo-font";
 import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import TransactionHistroy from "../components/TransactionHistroy";
-import { Ionicons,AntDesign  } from '@expo/vector-icons'; 
+import { Ionicons, AntDesign } from "@expo/vector-icons";
 import AppTextInput from "../components/AppTextInput";
-import QRCode from "react-native-qrcode-svg";
 
+const RecieveScreen = ({ setRecieve, data }) => {
+  const [imageUrl, setImageUrl] = useState();
+  const [loading, setLoading] = useState(true);
 
-const RecieveScreen = ({ setRecieve,data }) => {
-  const [imageUrl,setImageUrl] = useState()
-  const [loading,setLoading] = useState(true)
-  
   // console.log(qrCodeData)
   useEffect(() => {
     setLoading(true);
     setImageUrl(`data:image/png;base64,${data}`);
     setLoading(false);
   }, [data]);
-  
-  
 
   function handleGoBack() {
     setRecieve(false);
   }
   return (
     <View style={styles.container}>
-      <Text style={[styles.buttonText, {fontSize:18,textAlign: 'center'}]}>
-        Recieve Amount 
-</Text>
-      <View style={styles.inputContainer}>
-  </View>
+      <Text style={[styles.buttonText, { fontSize: 18, textAlign: "center" }]}>
+        Recieve Amount
+      </Text>
+      <View style={styles.inputContainer}></View>
 
       <TouchableOpacity onPress={handleGoBack}>
-      <View
+        <View
           style={{
             backgroundColor: colors.bg,
             marginTop: 10,
-            
           }}
         >
-        <Ionicons name="arrow-back-circle-outline" size={30} color="red" />       
+          <Ionicons name="arrow-back-circle-outline" size={30} color="red" />
         </View>
       </TouchableOpacity>
-      <View style={{
-      flex:1,justifyContent:'center',alignItems:'center'}}>
-        <Text style={[styles.buttonText, {fontSize:18,fontStyle:"normal",fontFamily:"Bold",textAlign: 'center',marginBottom:10}]}>Scan Qr</Text>
-      {loading ? (
-        <ActivityIndicator size="large" color="#0000ff" />
-      ) : (<Image source={{ uri: imageUrl }} style={{ width: 250, height: 250 }} />
-
-      )}
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Text
+          style={[
+            styles.buttonText,
+            {
+              fontSize: 18,
+              fontStyle: "normal",
+              fontFamily: "Bold",
+              textAlign: "center",
+              marginBottom: 10,
+            },
+          ]}
+        >
+          Scan Qr
+        </Text>
+        {loading ? (
+          <ActivityIndicator size="large" color="#0000ff" />
+        ) : (
+          <Image
+            source={{ uri: imageUrl }}
+            style={{ width: 250, height: 250 }}
+          />
+        )}
       </View>
     </View>
   );
@@ -64,13 +87,13 @@ const DropdownMenu = ({ options, onSelectOption }) => {
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
-  };}
+  };
+};
 const SendScreen = ({ setSend }) => {
-  const [amount,setamount]= useState()
-  const [accnumber,setaccnumber]= useState()
-  const [reason,setreason]= useState()
+  const [amount, setamount] = useState();
+  const [accnumber, setaccnumber] = useState();
+  const [reason, setreason] = useState();
 
-  
   function handleGoBack() {
     setSend(false);
   }
@@ -79,56 +102,85 @@ const SendScreen = ({ setSend }) => {
   }
   return (
     <View style={styles.container}>
-      <Text style={[styles.buttonText, {fontSize:18,textAlign: 'center'}]}>
+      <Text style={[styles.buttonText, { fontSize: 18, textAlign: "center" }]}>
         Send Amount Screen
-</Text>
+      </Text>
 
       <TouchableOpacity onPress={handleGoBack}>
-      <View
+        <View
           style={{
             backgroundColor: colors.bg,
             marginTop: 10,
-            
           }}
         >
-        <Ionicons name="arrow-back-circle-outline" size={30} color="red" />       
+          <Ionicons name="arrow-back-circle-outline" size={30} color="red" />
         </View>
       </TouchableOpacity>
-<View style={{
-  flex:1,justifyContent:'center',alignItems:'center'
-}}>
-      <AppTextInput
-        value={accnumber}
-        setValue={setaccnumber}
-        placeholder="Account number"
-        accnumber={true}
-
-      />
-      <AppTextInput
-        value={amount}
-        setValue={setamount}
-        placeholder="Amount"
-        amount={true}
-      />
-      <AppTextInput
-        value={reason}
-        setValue={setreason}
-        placeholder="Reason for transaction"
-        reason={true}
-      />
-      <TouchableOpacity onPress={handleSend}>
-        <LinearGradient
-          colors={[colors.cta, colors.purple]}
-          start={{ x: 0, y: 0.09 }}
-          end={{ x: 1.5, y: 1.5 }}
-          angle={102}
-          style={styles.sendButton}
-        >
-          <Text style={styles.sendButtonText}>Send</Text>
-        </LinearGradient>
-        </TouchableOpacity>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <AppTextInput
+          value={accnumber}
+          setValue={setaccnumber}
+          placeholder="Account number"
+          accnumber={true}
+        />
+        <AppTextInput
+          value={amount}
+          setValue={setamount}
+          placeholder="Amount"
+          amount={true}
+        />
+        <AppTextInput
+          value={reason}
+          setValue={setreason}
+          placeholder="Reason for transaction"
+          reason={true}
+        />
+        <View style={{ alignSelf: "center" }}>
+          <Menu
+            visible={visible}
+            onDismiss={closeMenu}
+            anchor={
+              <TouchableOpacity onPress={openMenu}>
+                <Text style={{ fontSize: 16 }}>
+                  {selectedType ? selectedType : "Select Transaction Reascon"}
+                </Text>
+              </TouchableOpacity>
+            }
+          >
+            <Menu.Item
+              onPress={() => handleDropdownChange("Option 1")}
+              title="Option 1"
+            />
+            <Divider />
+            <Menu.Item
+              onPress={() => handleDropdownChange("Option 2")}
+              title="Option 2"
+            />
+            <Divider />
+            <Menu.Item
+              onPress={() => handleDropdownChange("Option 3")}
+              title="Option 3"
+            />
+          </Menu>
         </View>
-
+        <TouchableOpacity onPress={handleSend}>
+          <LinearGradient
+            colors={[colors.cta, colors.purple]}
+            start={{ x: 0, y: 0.09 }}
+            end={{ x: 1.5, y: 1.5 }}
+            angle={102}
+            style={styles.sendButton}
+          >
+            <Text style={styles.sendButtonText}>Send</Text>
+          </LinearGradient>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -276,7 +328,7 @@ const styles = StyleSheet.create({
     width: 90,
     height: 40,
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
   sendButtonText: {
     color: colors.light,
